@@ -16,8 +16,8 @@ class DashedStepper extends StatelessWidget {
     this.lineHeight,
     this.dotSize,
     this.gap,
-  })  : assert((icons == null || icons.length == length),
-            'icons length must be the same as length'),
+  })  : assert(
+            (icons == null || icons.length == length), 'icons length must be the same as length'),
         assert((labels == null || labels.length == length),
             'labels length must be the same as length');
   final int length;
@@ -44,12 +44,12 @@ class DashedStepper extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (icons != null)
-                    Container(
-                      height: height ?? 40,
-                      alignment: Alignment.topCenter,
-                      child: icons![index],
-                    ),
+                  // if (icons != null)
+                  //   Container(
+                  //     height: height ?? 40,
+                  //     alignment: Alignment.topCenter,
+                  //     child: icons![index],
+                  //   ),
                   _HorizStep(
                     gap: gap,
                     dotSize: dotSize,
@@ -69,6 +69,7 @@ class DashedStepper extends StatelessWidget {
                         : index < step - 1
                             ? false
                             : true,
+                    icon: icons![index],
                   ),
                   const SizedBox(height: 8),
                   if (labels != null)
@@ -103,6 +104,7 @@ class _HorizStep extends StatelessWidget {
     this.height,
     this.dotSize,
     this.gap,
+    required this.icon,
   });
   final bool left;
   final bool right;
@@ -114,6 +116,7 @@ class _HorizStep extends StatelessWidget {
   final double? height;
   final double? dotSize;
   final double? gap;
+  final Widget icon;
 
   @override
   Widget build(BuildContext context) {
@@ -145,9 +148,8 @@ class _HorizStep extends StatelessWidget {
         ),
         _Dot(
           size: dotSize ?? 20,
-          color: left
-              ? activeColor ?? Colors.blue
-              : inActiveColor ?? Colors.grey[300],
+          color: left ? activeColor ?? Colors.blue : inActiveColor ?? Colors.grey[300],
+          icon: icon,
         ),
       ],
     );
@@ -214,20 +216,19 @@ class _Dot extends StatelessWidget {
   const _Dot({
     this.size = 5,
     this.color,
+    required this.icon,
   });
 
   final double size;
   final Color? color;
+  final Widget icon;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: size,
-      width: size,
-      child: Material(
-        shape: const StadiumBorder(),
-        color: color ?? Colors.black,
-      ),
+    return CircleAvatar(
+      radius: size / 2,
+      backgroundColor: color ?? Colors.black,
+      child: icon,
     );
   }
 }
